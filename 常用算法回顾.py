@@ -226,6 +226,7 @@
 
 
 """最长公共子序列"""
+
 # def longestCommonSubsequence(text1: str, text2: str) -> int:
 #     if not text1 or not text2:
 #         return 0
@@ -246,4 +247,52 @@
 # T2 = 'ace'
 # print(longestCommonSubsequence(T1, T2))
 
-"""最长连续公共子串"""
+"""partition"""
+from random import randint
+
+
+def partition(arr, start, end):
+    pivotIndex = randint(start, end)
+    pivotValue = arr[pivotIndex]
+    arr[end], arr[pivotIndex] = arr[pivotIndex], arr[end]
+    storeIndex = start
+    # print('pivot index', pivotIndex, pivotValue)
+    while start < end:
+        if arr[start] < pivotValue:
+            arr[storeIndex], arr[start] = arr[start], arr[storeIndex]
+            storeIndex += 1
+        start += 1
+        print(arr)
+
+    arr[storeIndex], arr[end] = arr[end], arr[storeIndex]
+    # print(arr)
+    return storeIndex
+
+
+# nums = [2, 6, 3, 4, 8, 62, 4, 32, 12, 5]
+# print(partition(nums, 0, len(nums) - 1))
+
+
+# TODO """最长连续公共子串"""
+
+# 最小的k个数
+def getLeastNumbers(arr, k):
+    if not arr or k > len(arr):
+        return arr
+    if k <= 0:
+        return []
+    import heapq
+    ret = []
+    n = len(arr)
+    for i in range(n):
+        if len(ret) < k:
+            heapq.heappush(ret, -arr[i])
+        else:
+            if ret[0] < -arr[i]:
+                heapq.heapreplace(ret, -arr[i])
+
+    return [-1 * item for item in ret]
+
+
+nums = [4, 5, 1, 6, 2, 7, 3]
+print(getLeastNumbers(nums, 4))
