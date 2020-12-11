@@ -36,7 +36,7 @@ class Solution:
 
 # S = "abcabcbb"
 # S = "bbbbbbbbb"
-# S = "pwwkew"
+S = "pwwkew"
 # S = " "
 # S = "AU"
 # S = "tmmzuxt"
