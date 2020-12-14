@@ -10,7 +10,7 @@ class Solution:
 
     def search(self, nums, left, right, target):
         if left > right:
-            return -1, -1
+            return [-1, -1]
         while left <= right:
             mid = (left + right) // 2
             if nums[mid] < target:
