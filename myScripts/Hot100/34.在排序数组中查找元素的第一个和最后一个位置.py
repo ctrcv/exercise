@@ -6,8 +6,7 @@ class Solution:
         if not nums:
             return [-1, -1]
 
-        ans = self.search(nums, 0, len(nums) - 1, target)
-        return ans
+        return self.search(nums, 0, len(nums) - 1, target)
 
     def search(self, nums, left, right, target):
         if left > right:
