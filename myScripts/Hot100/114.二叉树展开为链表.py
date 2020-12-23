@@ -47,44 +47,50 @@ class Solution:
         #         curr = curr.left
 
         # 官方题解
-        # 1. 前序遍历. 因为前序遍历对节点进行操作会破坏树的原结构
-        # 所有需要额外的存储空间O(n)，但是是属于在链表原地进行操作的
-        preorderList = list()
+        # 1. 前序遍历.
 
-        def preorderTraversal(root: TreeNode):
-            if root:
-                preorderList.append(root)
-                preorderTraversal(root.left)
-                preorderTraversal(root.right)
-
-        preorderTraversal(root)
-        size = len(preorderList)
-        for i in range(1, size):
-            prev, curr = preorderList[i - 1], preorderList[i]
-            prev.left = None
-            prev.right = curr
+        # 前序遍历思路：读取每个节点，并使用链表进行存储，
+        # 之后顺序读取列表，对每个节点进行左孩子等于空，右孩子等于下一个节点
+        # 因为前序遍历对节点进行操作会破坏树的原结构
+        # 所以需要额外的存储空间O(n)，但是是属于在链表原地进行操作的
+        # preorderList = list()
+        #
+        # def preorderTraversal(root: TreeNode):
+        #     if root:
+        #         preorderList.append(root)
+        #         preorderTraversal(root.left)
+        #         preorderTraversal(root.right)
+        #
+        # preorderTraversal(root)
+        # size = len(preorderList)
+        # for i in range(1, size):
+        #     prev, curr = preorderList[i - 1], preorderList[i]
+        #     prev.left = None
+        #     prev.right = curr
 
         # 1. 前序遍历迭代版，
-        preorderList = list()
-        stack = list()
-        node = root
+        # preorderList = list()
+        # stack = list()
+        # node = root
+        #
+        # while node or stack:
+        #     while node:
+        #         preorderList.append(node)
+        #         stack.append(node)
+        #         node = node.left
+        #     node = stack.pop()
+        #     node = node.right
+        #
+        # size = len(preorderList)
+        # for i in range(1, size):
+        #     prev, curr = preorderList[i - 1], preorderList[i]
+        #     prev.left = None
+        #     prev.right = curr
 
-        while node or stack:
-            while node:
-                preorderList.append(node)
-                stack.append(node)
-                node = node.left
-            node = stack.pop()
-            node = node.right
-
-        size = len(preorderList)
-        for i in range(1, size):
-            prev, curr = preorderList[i - 1], preorderList[i]
-            prev.left = None
-            prev.right = curr
-
-        # 2。前序遍历和展开同步进行
-        # 只能通过迭代的形式实现
+        # 2。前序遍历和展开同步进行，该方法只能通过迭代的形式实现，因为栈需要同时保存两个节点
+        # 思想：每次从栈内弹出一个节点作为当前访问的节点，获得该节点的子节点，
+        # 如果子节点不为空，则依次将右子节点和左子节点压入栈内（注意入栈顺序）
+        # 时间复杂度：O(n)，空间复杂度为O(n)，因为空间复杂度取决于栈的大小，栈的大小取决于节点的数目
         if not root:
             return
 
