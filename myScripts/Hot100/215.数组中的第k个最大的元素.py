@@ -22,17 +22,20 @@ import random
 
 
 # 快速排序中的partition思想
+# 标记索引处之前的值都小于等于标记值，之后的都大于等于标记值
+# 所以只需要当标记索引为目标索引时，目标索引处的索引即为第k大的索引
 class Solution:
     def _partition(self, nums, left, right):
-        pivotIndex = random.randint(left, right)
-        pivot = nums[pivotIndex]
-        # pivotIndex = 4
-        nums[pivotIndex], nums[left] = nums[left], nums[pivotIndex]
+        # 由于没有进行完全的快速排序，此处不能使用随机法选取标记索引
+        pivot = nums[left]
         i = left
         for j in range(left + 1, right + 1):
+            # 小于标记值的，交换到前方
             if nums[j] < pivot:
-                nums[i], nums[j] = nums[j], nums[i]
+                # 需要将指针先右移，防止覆盖标记值
                 i += 1
+                nums[i], nums[j] = nums[j], nums[i]
+
         nums[left], nums[i] = nums[i], nums[left]
         return i
 
