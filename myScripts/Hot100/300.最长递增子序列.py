@@ -26,7 +26,7 @@ from typing import List
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         if not nums: return 0
-        # 2. 动态规划+二分查找,时间复杂度:O(nlogn), 空间复杂度O(n)
+        # 2. 贪心算法+二分查找,时间复杂度:O(nlogn), 空间复杂度O(n)
         # 思想:
         # 定义一个辅助数组tails,tails[k]表示长度为k+1的序列的尾部元素
         # 设res为tails当前长度,表示当前最长递增子序列的长度
@@ -35,23 +35,48 @@ class Solution:
         # 1. 区间中存在tails[i]>nums[k],将第一个满足tails[i] > num[k]执行tails[i] = nums[k];
         # 因为更小的值在后面可能更容易出现比其大的值
         # 2.区间中不存在tails[i]>nums[k],意味着nums[k]比tails中的任意元素都大,可以直接接入序列中,新子序列的长度为res + 1
-        n = len(nums)
-        tails, res = [0] * n, 0
+
+        # n = len(nums)
+        # tails, res = [0] * n, 0
+        # for num in nums:
+        #     left, right = 0, res
+        #     while left < right:
+        #         mid = (left + right) // 2
+        #         if tails[mid] < num:
+        #             left = mid + 1
+        #         else:
+        #             right = mid
+        #     tails[left] = num
+        #     if right == res:
+        #         res += 1
+        #
+        # return res
+
+        d = []
         for num in nums:
-            left, right = 0, res
-            while left < right:
-                mid = (left + right) // 2
-                if tails[mid] < num:
-                    left = mid + 1
-                else:
-                    right = mid
-            tails[left] = num
-            if right == res:
-                res += 1
-        return res
+            # 如果d为空或者当前数字比d中的最后(最大)的数字大,则直接将该数字加入数组中
+            if not d or num > d[-1]:
+                d.append(num)
+            else:
+                # 否则,使用贪心算法更新d数组中第一个比num大于的数字
+                # 查找d数组中数字可以使用二分法,因为d中的数字均是递增序列
+                left, right = 0, len(d)
+                loc = right
+                while left < right:
+                    mid = left + (right - left) // 2
+                    # 找第一个比num大的元素.
+                    # 当等于时,值仍然保持为num
+                    if d[mid] >= num:
+                        right = mid - 1
+                        loc = mid
+                    else:
+                        left = mid + 1
+                d[loc] = num
+
+        return len(d)
 
 
-Nums = [10, 9, 2, 5, 3, 7, 101, 18]
+# Nums = [10, 9, 2, 5, 3, 7, 101, 18]
 # Nums = [0, 1, 0, 3, 2, 3]
-# Nums = [7, 7, 7, 7, 7, 7]
+Nums = [7, 7, 7, 7, 7, 7]
 print(Solution().lengthOfLIS(Nums))
